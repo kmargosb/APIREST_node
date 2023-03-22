@@ -1,0 +1,165 @@
+PASO 1
+
+Crear carpeta, abrir terminal dentro de la carpeta y escribir codigos:
+
+- npm i express (instalamos express)
+- npm init -y (crea el "package.json" por default)
+- npm i nodemon -D (instala "nodemon" como dependencia de desarrollo)
+  "nodemon sirve para que el servidor se actualice automaticamente"
+
+Al package.json cambiar el primer script por "dev": "nodemon index.js".
+En el package.json escribir "type": "module" donde quieras. (para que pueda entender el codigo moderno)
+- Para ejecutar el servidor escribes en la terminal (npm run dev)
+
+Crear un archivo index.js donde importaremos express (import express from 'express') y momentaneamente crearemos rutas con ( app = express() )
+
+app.get('/', (req, res) => res.send('obteniendo'))
+app.post('/', (req, res) => res.send('creando'))
+app.put('/', (req, res) => res.send('actualizando'))
+app.delete('/', (req, res) => res.send('eliminando'))
+
+app.listen(3000) "sirve para seleccionar el PORT del local host donde veremos nuestro api rest"
+
+Instalar el client REST (thunder client) en visual studio code extension de VSC
+
+agregar los metodos get post put y delete al http://localhost:3000
+
+
+
+
+PASO 2
+
+Instalar Base de Datos (mysql)
+
+Crear Carpeta "db" y dentro crear archivo "database.sql"
+
+Escribir en el archivo database.sql:
+
+CREATE DATABASE IF NOT EXISTS "nombre de tu base de datos";
+
+USE "nombre de bd";
+
+CREATE TABLE "nombre de tu tabla" (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(45) DEFAULT NULL,
+    description VARCHAR(1000) DEFAULT NULL,
+    room INT(2) DEFAULT NULL,
+    bath INT(2) DEFAULT NULL,
+    price INT(9) DEFAULT NULL,
+    image MEDIUMBLOB NOT NULL,
+    PRIMARY KEY (id)
+);
+
+DESCRIBE "nombre de tabla";
+
+En la terminal de Mysql escribir:
+
+- CREATE DATABASE IF NOT EXISTS "nombre de tu base de datos"; (para crear la base de datos)
+- show databases; (para mostrar la base de datos)
+- use "nombre de tu base de datos" (para entrar en la base de datos)
+- CREATE TABLE "nombre de tu tabla" (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(45) DEFAULT NULL,
+    description VARCHAR(1000) DEFAULT NULL,
+    room INT(2) DEFAULT NULL,
+    bath INT(2) DEFAULT NULL,
+    price INT(9) DEFAULT NULL,
+    image MEDIUMBLOB NOT NULL,
+    PRIMARY KEY (id)
+);                                 (para crear la tabla)
+
+COMANDOS EXTRAS:
+- show tables; (muestra tus tablas)
+- describe "nombre de tabla"; (muestra el contenido de tu tabla)
+
+Instalar el modulo "npm i mysql2"
+
+Crear archivo db.js en la raiz.
+Dentro del archivo escribe:
+
+- import {createPool} from 'mysql2/promise' 
+
+export const pool = createPool({
+	host: 'localhost',
+	user: 'root',
+	password:'612916121',
+	port: '3306',
+	database: 'realstatedb'
+})
+
+(createPool es una funcion de mysql2 para realizar un conjunto de conecciones para utilizar en produccion)
+(mysql2/promise se coloca asi para llamar a las promesas al momento de consultar con mysql)
+
+CONECTAR CON MYSQL:
+para demostrar que esta conectada, en la terminal de mysql escribimos una consulta con el comando:
+
+SELECT 1+1 AS result;
+
+En vsc en las rutas crear una nueva ruta con el modulo get.
+
+app.get('/ping', async (req, res) => {
+	const result = await pool.query('SELECT "pong" AS result')
+	res.json(result)
+})
+Luego entrar en el localhost:300/ping y ver el resultado.
+
+
+
+
+PASO 3
+
+Separar y ordenar.
+
+Crear carpeta src y dentro va la carpeta "Routes" y los archivos "index.js" y "db.js", dentro de Routes crear dos archivos, "index.routes.js" y "product.routes.js"
+
+En el archivo product.routes.js escribimos:
+
+import {Router} from "express"; (importamos el modulo Router de express)
+
+const router = Router()
+
+// Rutas
+router.get('/', (req, res) => res.send('Pagina principal de los productos'))
+router.post('/', (req, res) => res.send('Creando productos'))
+router.put('/', (req, res) => res.send('Actualizando productos'))
+router.delete('/', (req, res) => res.send('Eliminando productos'))
+
+export default router // con esto se exporta con un nombre por default
+
+En el archivo index.routes.js escribimos:
+
+import {Router} from "express" // importamos el modulo Router de express
+import {pool} from '../db.js' //importamos el modulo pool de mysql
+
+const router = Router()
+
+// La ruta que usa pool
+router.get('/ping', async (req, res) => {
+    const [result] = await pool.query('SELECT "pong" AS result')
+    res.json(result[0])
+})
+
+export default router //con esto se exporta con un nombre por default
+
+en el archivo index.js escribimos:
+
+import productosRoutes from './routes/productos.routes.js'
+import indexRoutes from "./routes/index.routes.js";
+
+app.use(indexRoutes)
+app.use(productosRoutes)
+
+
+
+
+
+
+
+
+
+PASO ? 
+
+Variables de entorno
+
+npm i dotenv // instala el modulo .env 
+
