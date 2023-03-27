@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <form action="/subir_productos" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              placeholder="Title"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="number"
+              name="price"
+              class="form-control"
+              placeholder="$ Price $"
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              name="descrip"
+              class="form-control"
+              placeholder="Description"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input 
+                type="number" 
+                class="form-control input-number" 
+                id="rooms" 
+                name="room" min="1" max="10">
+              <label for="rooms" class="custom-file">Rooms</label>
+              <input 
+                type="number" 
+                class="form-control input-number" 
+                id="bath" 
+                name="bath" min="1" max="10">
+              <label for="bath" class="custom-file">Bath</label>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input
+                type="file"
+                name="image"
+                class="custom-file-input"
+                id="inputGroupFile01"
+              />
+              <label for="inputGroupFile01" class="custom-file-label">Choose
+                File</label>
+            </div>
+          </div>
+          <button class="btn btn-primary">
+            upload
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>  
+  <div class="col-md-8">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Description</th>
+          <th scope="col">Price</th>       
+          <th scope="col">Operations</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each rows}}
+        <tr>
+          <th scope="row">{{title}}</th>
+          <td>{{descrip}}</td>
+          <td>{{price}}</td>
+          <td>
+            <a href="/product/{{id}}" class="btn btn-primary">Edit</a>
+            <a href="/delete_product/{{id}}" class="btn btn-danger">Delete</a>
+          </td>          
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+ 

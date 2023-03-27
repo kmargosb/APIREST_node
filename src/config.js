@@ -1,15 +1,10 @@
-import {config} from 'dotenv'
+require('dotenv').config();
 
-config()
+exports.PORT = process.env.PORT || 3000;
 
-
-export const PORT = process.env.PORT || 3000
-
-export const DB_USER = process.env.DB_USER || 'root'
-export const DB_PASSWORD = process.env.DB_PASSWORD || '612916121'
-export const DB_HOST = process.env.DB_HOST || 'localhost'
-export const DB_DATABASE = process.env.DB_DATABASE || 'realstatedb'
-export const DB_PORT = process.env.DB_PORT|| 3306
-
-
+exports.DB_USER = process.env.DB_USER || 'root';
+exports.DB_PASSWORD = process.env.DB_PASSWORD || '612916121';
+exports.DB_HOST = process.env.DB_HOST || 'localhost';
+exports.DB_DATABASE = process.env.DB_DATABASE || 'realstatedb';
+exports.DB_PORT = process.env.DB_PORT || 3306;
 

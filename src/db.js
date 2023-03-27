@@ -1,15 +1,13 @@
-import { createPool } from "mysql2/promise";
-import {
+const { createPool } = require("mysql2/promise");
+const {
   DB_HOST,
   DB_PORT,
   DB_DATABASE,
   DB_USER,
   DB_PASSWORD,
-} from './config.js';
+} = require('./config.js');
 
-// import fs from 'fs';
-
-export const pool = createPool({
+const pool = createPool({
   host: DB_HOST,
   user: DB_USER,
   password: DB_PASSWORD,
@@ -17,5 +15,4 @@ export const pool = createPool({
   database: DB_DATABASE
 });
 
-// const imageData = fs.readFileSync('public/img/casa1.jpg')
-// export const imageBase64 = imageData.toString('base64')
+module.exports = { pool };

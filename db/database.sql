@@ -9,7 +9,8 @@ CREATE TABLE piso (
     room INT(2) DEFAULT NULL,
     bath INT(2) DEFAULT NULL,
     price INT(9) DEFAULT NULL,
-    -- imagen MEDIUMBLOB NOT NULL,
+    imageURL VARCHAR(10000) NOT NULL,
+    public_id VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 );
 

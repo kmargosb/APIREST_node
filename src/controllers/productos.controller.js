@@ -1,59 +1,76 @@
-import { pool } from "../db.js";
-// import { imageBase64 } from "../db.js";
+const { pool } = require("../db.js");
+const fs = require("fs-extra");
+const cloudinary = require("cloudinary");
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-export const getProducts = async (req, res) => {
+exports.homePage = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM piso");
-    res.json(rows);
+    res.render("home", { rows });
+    console.log(rows);
   } catch (error) {
     return res.status(500).json({
       message: "Algo ha ocurrido",
     });
   }
 };
-export const getProduct = async (req, res) => {
+
+exports.cPanel = async (req, res) => {
   try {
-    // console.log(req.params.id)
+    const [rows] = await pool.query("SELECT * FROM piso");
+    res.render("subir_productos", { rows });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Algo ha ocurrido",
+    });
+  }
+};
+
+exports.getProduct = async (req, res) => {
+  try {
+    console.log(req.params.id)
     const [rows] = await pool.query("SELECT * FROM piso WHERE id = ?", [
       req.params.id,
     ]);
+    
 
     if (rows.length <= 0)
       return res.status(404).json({
         message: "Real State Not Found",
       });
 
-    res.json(rows[0]);
+    res.render('product', {rows});
   } catch (error) {
     return res.sendStatus(500).json({
       message: "Algo ha ocurrido",
     });
   }
 };
-export const createProducts = async (req, res) => {
+
+exports.createProducts = async (req, res) => {
   try {
     const { title, descrip, room, bath, price } = req.body;
+    const result = await cloudinary.uploader.upload(req.file.path);
+    const imageURL = result.url;
+    const public_id = result.public_id;
     const [rows] = await pool.query(
-      "INSERT INTO piso(title, descrip, room, bath, price) VALUES (?, ?, ?, ?, ?)",
-      [title, descrip, room, bath, price]
+      "INSERT INTO piso(title, descrip, room, bath, price, imageURL, public_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [title, descrip, room, bath, price, imageURL, public_id]
     );
-    res.send({
-      id: rows.insertId,
-      title,
-      descrip,
-      room,
-      bath,
-      price,
-      // imagen,
-    });
-    // res.redirect('/')
+    await fs.unlink(req.file.path);
+    res.redirect("/");
   } catch (error) {
-    return res.sendStatus(500).json({
+    return res.status(500).json({
       message: "Algo ha ocurrido",
     });
   }
 };
-export const updateProducts = async (req, res) => {
+
+exports.updateProducts = async (req, res) => {
   const { id } = req.params;
   const { title, descrip, room, bath, price } = req.body;
   try {
@@ -78,22 +95,25 @@ export const updateProducts = async (req, res) => {
     });
   }
 };
-export const deleteProducts = async (req, res) => {
+
+exports.deleteProducts = async (req, res) => {
   try {
     const [result] = await pool.query("DELETE FROM piso WHERE id = ?", [
       req.params.id,
     ]);
-    // console.log(result)
+    const dltCloud = await cloudinary.uploader.destroy(req.params.public_id);
+    console.log(result, dltCloud);
 
-    if (result.affectedRows <= 0)
+    if (result.affectedRows <= 0) {
       return res.status(404).json({
         message: "Piso no encontrado",
       });
-
-    res.sendStatus(204);
-    // res.redirect('/')
+    } else {
+      res.status(204);
+      res.redirect("/subir_productos");
+    }
   } catch (error) {
-    return res.sendStatus(500).json({
+    return res.status(500).json({
       messaje: "Algo ha ocurrido",
     });
   }

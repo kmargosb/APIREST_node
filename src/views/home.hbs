@@ -1,0 +1,12 @@
+<div class="d-flex flex-wrap justify-content-center">
+  {{#each rows}}
+    <div class="card overflow-hidden" style="width: 18rem; max-height: 27.75rem; margin: 10px;">
+      <img src="{{imageURL}}" class="card-img-top img-fluid" alt="..." style="height: 200px; object-fit: cover;" />
+      <div class="card-body ">
+        <h5 class="card-title">{{title}}</h5>
+        <p class="card-text overflow-hidden" style="max-height: 1.5rem;" >{{descrip}}</p>
+        <a href="/product/{{id}}" class="btn btn-primary">See Details</a>
+      </div>
+    </div>
+  {{/each}}
+</div>

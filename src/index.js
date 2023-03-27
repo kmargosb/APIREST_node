@@ -1,5 +1,6 @@
-import app from './app.js'
-import { PORT } from './config.js'
+const app = require('./app');
+const { PORT } = require('./config');
 
-app.listen(PORT);
-console.log('Server running on port', PORT);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
