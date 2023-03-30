@@ -3,6 +3,7 @@ const {
   homePage,
   cPanel,
   getProduct,
+  editProduct,
   createProducts,
   updateProducts,
   deleteProducts,
@@ -16,10 +17,12 @@ router.get('/subir_productos', cPanel);
 
 router.get('/product/:id', getProduct);
 
+router.get('/edit_product/:id', editProduct);
+
 router.post('/subir_productos', createProducts);
 
-router.patch('/edit/:id', updateProducts);
+router.patch('/upload_product/:id', updateProducts);
 
-router.get('/delete_product/:id', deleteProducts);
+router.delete('/delete_product/:id', deleteProducts); // no me funciona con la peticion http delete
 
 module.exports = router;

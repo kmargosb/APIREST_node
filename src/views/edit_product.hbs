@@ -1,0 +1,101 @@
+{{#each rows}}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <form
+            action="/subir_productos"
+            method="PATCH"
+            enctype="multipart/form-data"
+          >
+            <div class="form-group">
+              <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="{{title}}"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="number"
+                name="price"
+                class="form-control"
+                placeholder="{{price}}"
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                name="descrip"
+                class="form-control"
+                placeholder="{{descrip}}"
+              ></textarea>
+            </div>
+            <div class="form-group col-md-4">
+              <div class="input-group">
+                <input
+                  type="number"
+                  class="form-control input-number"
+                  id="rooms"
+                  name="room"
+                  placeholder="{{room}}"
+                  min="1"
+                  max="10"
+                />
+                <label for="rooms" class="custom-file">Rooms</label>
+                <input
+                  type="number"
+                  class="form-control input-number"
+                  id="bath"
+                  name="bath"
+                  placeholder="{{bath}}"
+                  min="1"
+                  max="10"
+                />
+                <label for="bath" class="custom-file">Bath</label>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input
+                  type="file"
+                  name="image"
+                  class="custom-file-input"
+                  id="inputGroupFile01"
+                />
+                <label for="inputGroupFile01" class="custom-file-label">Choose
+                  File</label>
+              </div>
+            </div>
+            <button class="btn btn-success update-product" data-product-id="{{id}}">
+              upload
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/each}}
+
+<script>
+  const $updateBtn = document.querySelectorAll('.update-product');
+    $updateBtn.forEach($updateBtn => {
+      $updateBtn.addEventListener('click', (event) => {
+        const productId = event.target.dataset.productId;
+          fetch(`/upload_product/${productId}`, {
+            method: 'PATCH'
+            })
+            .then(response => {
+              if (response.ok) {
+                window.location.href = "https://localhost:3000";
+
+              } else {
+                throw new Error('No se ha podido actualizar el producto');
+              }
+            })
+            .catch(error => console.error(error));        
+      });
+    
+    });
+  
+</script>

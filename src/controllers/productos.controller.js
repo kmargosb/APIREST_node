@@ -1,6 +1,6 @@
 const { pool } = require("../db.js");
 const fs = require("fs-extra");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -51,6 +51,17 @@ exports.getProduct = async (req, res) => {
   }
 };
 
+exports.editProduct = async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM piso WHERE id = ?", [req.params.id]);
+    res.render("edit_product", { rows });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Algo ha ocurrido",
+    });
+  }
+}
+
 exports.createProducts = async (req, res) => {
   try {
     const { title, descrip, room, bath, price } = req.body;
@@ -85,12 +96,12 @@ exports.updateProducts = async (req, res) => {
         message: "Piso no encontrado",
       });
 
-    const [rows] = await pool.query("SELECT * FROM piso WHERE id = ?", [id]);
-
-    res.json(rows[0]);
+    // const [rows] = await pool.query("SELECT * FROM piso WHERE id = ?", [id]);
+    // res.json(rows[0]);
     // res.redirect('/')
   } catch (error) {
-    return res.sendStatus(500).json({
+    console.log(error)
+    return res.status(500).json({
       messaje: "Algo ha ocurrido",
     });
   }
@@ -98,21 +109,21 @@ exports.updateProducts = async (req, res) => {
 
 exports.deleteProducts = async (req, res) => {
   try {
-    const [result] = await pool.query("DELETE FROM piso WHERE id = ?", [
-      req.params.id,
-    ]);
-    const dltCloud = await cloudinary.uploader.destroy(req.params.public_id);
-    console.log(result, dltCloud);
+    const result = await pool.query("DELETE FROM piso WHERE id = ?", [req.params.id]);
+    // await cloudinary.v2.uploader.destroy(req.params.public_id);    
+    
 
     if (result.affectedRows <= 0) {
       return res.status(404).json({
         message: "Piso no encontrado",
       });
     } else {
-      res.status(204);
-      res.redirect("/subir_productos");
+      res.status(204).end();
+
+      // res.redirect("/subir_productos");      
     }
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       messaje: "Algo ha ocurrido",
     });
