@@ -8,11 +8,12 @@ cloudinary.config({
 });
 
 exports.homePage = async (req, res) => {
-  try {
+  try {        
     const [rows] = await pool.query("SELECT * FROM piso");
     res.render("home", { rows });
     console.log(rows);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Algo ha ocurrido",
     });
@@ -24,6 +25,7 @@ exports.cPanel = async (req, res) => {
     const [rows] = await pool.query("SELECT * FROM piso");
     res.render("subir_productos", { rows });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Algo ha ocurrido",
     });
