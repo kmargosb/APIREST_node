@@ -84,6 +84,7 @@ exports.createProducts = async (req, res) => {
 exports.updateProducts = async (req, res) => {
   const { id } = req.params;
   const { title, descrip, room, bath, price } = req.body;
+
   try {
     const [result] = await pool.query(
       "UPDATE piso SET title = IFNULL(?, title), descrip = IFNULL(?, descrip), room = IFNULL(?, room), bath = IFNULL(?, bath), price = IFNULL(?, price) WHERE id = ?",
@@ -96,8 +97,9 @@ exports.updateProducts = async (req, res) => {
         message: "Piso no encontrado",
       });
 
+      
     // const [rows] = await pool.query("SELECT * FROM piso WHERE id = ?", [id]);
-    // res.json(rows[0]);
+    // console.log(rows)
     // res.redirect('/')
   } catch (error) {
     console.log(error)

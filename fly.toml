@@ -1,0 +1,31 @@
+# fly.toml file generated for realstate on 2023-04-11T22:53:51+02:00
+
+app = "realstate"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "mad"
+processes = []
+
+[env]
+  PORT = "8080"
+  MYSQL_DATABASE = "realstatedb"
+  MYSQL_USER = "non_root_user"
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

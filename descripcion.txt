@@ -2,8 +2,8 @@ PASO 1
 
 Crear carpeta, abrir terminal dentro de la carpeta y escribir codigos:
 
-- npm i express (instalamos express)
 - npm init -y (crea el "package.json" por default)
+- npm i express (instalamos express)
 - npm i nodemon -D (instala "nodemon" como dependencia de desarrollo)
   "nodemon sirve para que el servidor se actualice automaticamente"
 
@@ -52,22 +52,6 @@ CREATE TABLE "nombre de tu tabla" (
 
 DESCRIBE "nombre de tabla";
 
-En la terminal de Mysql escribir:
-
-- CREATE DATABASE IF NOT EXISTS "nombre de tu base de datos"; (para crear la base de datos)
-- show databases; (para mostrar la base de datos)
-- use "nombre de tu base de datos" (para entrar en la base de datos)
-- CREATE TABLE "nombre de tu tabla" (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    name VARCHAR(45) DEFAULT NULL,
-    description VARCHAR(1000) DEFAULT NULL,
-    room INT(2) DEFAULT NULL,
-    bath INT(2) DEFAULT NULL,
-    price INT(9) DEFAULT NULL,
-    image MEDIUMBLOB NOT NULL,
-    PRIMARY KEY (id)
-);                                 (para crear la tabla)
-
 COMANDOS EXTRAS:
 - show tables; (muestra tus tablas)
 - describe "nombre de tabla"; (muestra el contenido de tu tabla)
@@ -111,6 +95,8 @@ PASO 3
 Separar y ordenar.
 
 Crear carpeta src y dentro va la carpeta "Routes" y los archivos "index.js" y "db.js", dentro de Routes crear dos archivos, "index.routes.js" y "product.routes.js"
+
+en el json arreglar la ruta del index.js en el nodemon
 
 En el archivo product.routes.js escribimos:
 
@@ -162,4 +148,3 @@ PASO ?
 Variables de entorno
 
 npm i dotenv // instala el modulo .env 
-

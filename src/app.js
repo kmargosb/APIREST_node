@@ -10,7 +10,7 @@ const indexRoutes = require('./routes/index.routes');
 
 const app = express();
 
-// Settings
+// Settings Views y handlebars-layouts-partials 
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs.create({
   defaultLayout: 'main',

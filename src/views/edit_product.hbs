@@ -65,7 +65,7 @@
                 />
                 <label for="inputGroupFile01" class="custom-file-label">Choose
                   File</label>
-              </div>
+              </div>              
             </div>
             <button class="btn btn-success update-product" data-product-id="{{id}}">
               upload
@@ -87,7 +87,7 @@
             })
             .then(response => {
               if (response.ok) {
-                window.location.href = "https://localhost:3000";
+                {{!-- window.location.href = "https://localhost:3000"; --}}
 
               } else {
                 throw new Error('No se ha podido actualizar el producto');
